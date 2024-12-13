@@ -8,6 +8,7 @@ interface DisparoData {
   Entrega: string;
   "Fecha CMX": string;
   Estatus: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
