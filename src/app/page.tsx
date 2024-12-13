@@ -68,13 +68,17 @@ export default function Home() {
     }
   };
 
-  const getRowStyle = (status: string): React.CSSProperties => {
+  const getRowStyle = (status: string, columnName: string): React.CSSProperties => {
     if (status === "LISTO PARA ENVIAR" || status === "RTS") {
       return { backgroundColor: "yellow" };
     } else if (status === "ENVIADO") {
       return { backgroundColor: "green" };
     } else if (status === "Disparo Nuevo") {
-      return { backgroundColor: "" };
+      if (columnName === "Linea") {
+        return { backgroundColor: "rgb(153,204,255)" };
+      } else if (columnName === "Estatus") {
+        return { backgroundColor: "rgb(255,204,255)" };
+      }
     }
     return {};
   };
@@ -212,15 +216,24 @@ export default function Home() {
             </thead>
             <tbody>
               {filteredData.map((row, index) => (
-                <tr key={index} style={getRowStyle(row.Estatus)}>
+                <tr key={index}>
                   {Object.entries(row).map(([key, value], idx) =>
                     !columnsToHide.includes(key) ? (
-                      <td key={idx}>
-                        {key === 'Entrega' ? formatEntregaDate(value as string) :
-                          key === 'Fecha CMX' ? formatFechaCMXDate(value as string) :
-                            value === null ? "" :
-                              key === 'Hora de envio' ? formatEntregaDate(value as string) :
-                                String(value)}
+                      <td
+                        key={idx}
+                        style={getRowStyle(row.Estatus, key)}
+                      >
+                        {key === "Entrega"
+                          ? formatEntregaDate(value as string)
+                          : key === "Fecha CMX"
+                            ? value === null
+                              ? "Revision con planeacion"
+                              : formatFechaCMXDate(value as string)
+                            : value === null
+                              ? ""
+                              : key === "Hora de envio"
+                                ? formatEntregaDate(value as string)
+                                : String(value)}
                       </td>
                     ) : null
                   )}
