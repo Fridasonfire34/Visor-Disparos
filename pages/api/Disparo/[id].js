@@ -1,5 +1,3 @@
-// pages/api/Disparo.js
-
 import { Connection, Request } from "tedious";
 
 const config = {
@@ -20,6 +18,8 @@ const config = {
 };
 
 export default function handler(req, res) {
+    const { id } = req.query; // Obtiene el ID de la URL
+
     const connection = new Connection(config);
 
     connection.on("connect", (err) => {
@@ -29,21 +29,23 @@ export default function handler(req, res) {
             return;
         }
 
+        // Consulta SQL ajustada para traer todos los campos
         const query = `
-            SELECT * 
-FROM DISPARO 
-WHERE Estatus = 'ENVIADO' 
-  AND Tipo IS NULL 
-  AND [Entrega] >= DATEADD(WEEK, -2, GETDATE()) 
-ORDER BY Entrega ASC, Linea ASC, [Fecha CMX] ASC, Secuencia ASC;
-
+            SELECT 
+                Tipo, 
+                [Orden de Produccion], 
+                Secuencia, 
+                [Numero de Parte], 
+                [Cantidad Requerida]
+            FROM SOL_CONSOLIDADO
+            WHERE ID = @id
         `;
 
         const request = new Request(query, (err, rowCount, rows) => {
             if (err) {
                 console.error("Request Failed", err);
                 res.status(500).json({ error: "Request Failed", details: err.message });
-                connection.close(); // Cerrar conexión en caso de error
+                connection.close();
                 return;
             }
 
@@ -61,9 +63,12 @@ ORDER BY Entrega ASC, Linea ASC, [Fecha CMX] ASC, Secuencia ASC;
                 return row;
             });
 
-            res.status(200).json(results);
-            connection.close(); // Cerrar conexión después de enviar los resultados
+            res.status(200).json(results); // Devuelve los datos encontrados
+            connection.close();
         });
+
+        // Parametrización para evitar inyecciones SQL
+        request.addParameter("id", require("tedious").TYPES.NVarChar, id);
 
         connection.execSql(request);
     });

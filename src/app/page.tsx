@@ -8,7 +8,6 @@ interface DisparoData {
   Entrega: string;
   "Fecha CMX": string;
   Estatus: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
@@ -17,7 +16,7 @@ export default function Home() {
   const [disparoData, setDisparoData] = useState<DisparoData[]>([]);
   const [apiEndpoint, setApiEndpoint] = useState<string | null>(null);
   const [filters, setFilters] = useState<{ [key: string]: string }>({})
-  const columnsToHide = ["ID", "Cambios", "Colors", "Tipo"];
+  const columnsToHide = ["ID", "Cambios", "Colors", "Tipo", "ID_CONS"];
 
   const formatEntregaDate = (dateString: string): string => {
     const date = new Date(dateString);
@@ -234,7 +233,20 @@ export default function Home() {
                               ? ""
                               : key === "Hora de envio"
                                 ? formatEntregaDate(value as string)
-                                : String(value)}
+                                : key === "Orden Produccion" ? (
+                                  <a
+                                    href={`/sequences?id=${row.ID}`}
+                                    style={{ color: 'blue', textDecoration: 'underline' }}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    {value}
+                                  </a>
+
+                                ) : (
+                                  value
+                                )
+                        }
                       </td>
                     ) : null
                   )}

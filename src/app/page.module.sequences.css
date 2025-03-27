@@ -1,0 +1,74 @@
+/* Estilos globales de la página */
+.page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Alinea todo el contenido en el centro verticalmente */
+    padding: 10px;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    /* Alinea el texto al centro */
+}
+
+.header {
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+    z-index: 1;
+    /* background-color: rgba(255, 255, 255, 0.8); */
+    /* Fondo semitransparente para evitar que se vea la tabla */
+}
+
+.title {
+    font-size: 2rem;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    /* Asegura que el título esté centrado */
+    margin-top: 20px;
+    /* Un poco de margen para separar el título de la cabecera */
+}
+
+/* Estilos para la tabla */
+.tableContainer {
+    width: 80%;
+    /* Ajusta el tamaño de la tabla */
+    overflow-x: auto;
+    padding: 10px;
+    margin-top: 20px;
+    display: block;
+    /* Hace que la tabla se comporte como un bloque */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.table {
+    width: 100%;
+    /* La tabla ocupa todo el ancho del contenedor */
+    border-collapse: collapse;
+    /* Hace que las celdas se alineen sin espacios entre ellas */
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.table td,
+.table th {
+    width: 20%;
+    /* Ajusta el ancho de las columnas */
+}

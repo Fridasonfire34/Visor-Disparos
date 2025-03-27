@@ -33,7 +33,8 @@ export default function handler(req, res) {
             SELECT * FROM DISPARO 
             WHERE Estatus = 'ENVIADO' 
             AND Tipo = 'BOA' 
-            ORDER BY Entrega ASC, Linea ASC, [Fecha CMX] ASC, Secuencia ASC
+            AND [Entrega] >= DATEADD(WEEK, -2, GETDATE()) 
+ORDER BY Entrega ASC, Linea ASC, [Fecha CMX] ASC, Secuencia ASC
         `;
 
         const request = new Request(query, (err, rowCount, rows) => {
